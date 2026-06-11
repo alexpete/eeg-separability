@@ -7,7 +7,7 @@ library(ELRSepTests)
 ## EEG Data Analysis of Alcoholic Group
 ################################################################################
 
-load(file.path('data', 'eeg_data_filtered_and_averaged.RData'))
+load('eeg_data_filtered_and_averaged.RData')
 
 ## Create Data Arrays
 M1 <- dim(Xa)[2] # 64, number of channels
@@ -64,21 +64,21 @@ rm(WaldResaPSRev)
 # Alcoholic ELR Tests
 mnBoota <- c(floor(na^(0.95)), na)
 
-ELRResa <- sapply(mnBoota, \(mn){
+ELRResa <- lapply(mnBoota, \(mn){
   val <- ELRSepTests(Xa, tt2 = tt, nullHyp = c('ParSep', 'WkSep', 'Sep'), 
                      JTest = JTestELRa, LTest = LTestELRa, B = B,
                      thin = FALSE, mnBoot = mn)
   valPSRev <- ELRSepTests(aperm(Xa, c(1, 3, 2)), tt1 = tt, JTest = JTestELRa, LTest = LTestELRa,
-                             ELctrl = melt::el_control(maxit = 1000L, maxit_l = 1000L),
-                             nullHyp = "ParSep", B = B, thin = FALSE,
-                             mnBoot = mn)
+                          ELctrl = melt::el_control(maxit = 1000L, maxit_l = 1000L),
+                          nullHyp = "ParSep", B = B, thin = FALSE,
+                          mnBoot = mn)
   bootPval <- rbind(valPSRev$bootPval, val$bootPval)
   tStats <- rbind(valPSRev$tStats, val$tStats)
   tStatsBoot <- c(valPSRev$tStatsBoot, val$tStatsBoot)
   ELoptInfo <- c(valPSRev$ELoptInfo, val$ELoptInfo)
-
+  
   rownames(bootPval) <- rownames(tStats) <- names(tStatsBoot) <- names(ELoptInfo) <- c('ParSepSpace', 'ParSepTime', 'WkSep', 'Sep')
-  colnames(bootPval) <- colnames(tStats) <- colnames(ELRResa$bootPval)
+  colnames(bootPval) <- colnames(tStats) <- colnames(val$bootPval)
   val$bootPval <- bootPval
   val$tStats <- tStats
   val$tStatsBoot <- tStatsBoot
@@ -89,4 +89,4 @@ ELRResa <- sapply(mnBoota, \(mn){
 
 save(Xa, na, MBEa, M1, M2, tt, mnBoota, JTestELRa, 
      LTestELRa, JTestWalda, LTestWalda, WaldResa, ELRResa,
-     file = file.path("results", "EEGTestRes_AlcGrp.RData"))
+     file = "EEGTestRes_AlcGrp.RData")

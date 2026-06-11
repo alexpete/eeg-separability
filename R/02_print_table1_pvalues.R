@@ -5,8 +5,8 @@ load(file.path('results', 'EEGTestRes_AlcGrp.RData'))
 
 # Print p-values
 
-WaldResa$bootPval
+round(WaldResa$bootPval, 3)
 
-ELRResa[[1]]$bootPval
+round(ELRResa[[1]]$bootPval, 3)
 
-ELRResa[[2]]$bootPval
+round(ELRResa[[2]]$bootPval, 3)
