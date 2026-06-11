@@ -87,6 +87,6 @@ ELRResa <- lapply(mnBoota, \(mn){
   return(val)
 })
 
-save(Xa, na, MBEa, M1, M2, tt, mnBoota, JTestELRa, 
+save(Xa, na, M1, M2, tt, mnBoota, JTestELRa, 
      LTestELRa, JTestWalda, LTestWalda, WaldResa, ELRResa,
      file = "EEGTestRes_AlcGrp.RData")
